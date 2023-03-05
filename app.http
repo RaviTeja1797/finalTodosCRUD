@@ -31,14 +31,14 @@ post http://localhost:3002/todos/
 Content-Type : application/json
 
 {
-    "todo": "Learn XPM",
+    "todo": "Learn Ruby",
     "priority": "LOW",
     "status": "TO DO"
 }
 ###
 
 //API-4 updateTodo
-put http://localhost:3002/todos/5
+put http://localhost:3002/todos/3
 Content-Type: application/json
 
 {
@@ -46,7 +46,7 @@ Content-Type: application/json
 }
 ###
 
-put http://localhost:3002/todos/6
+put http://localhost:3002/todos/3
 Content-Type: application/json
 
 {
@@ -54,7 +54,7 @@ Content-Type: application/json
 }
 ###
 
-put http://localhost:3002/todos/5
+put http://localhost:3002/todos/3
 Content-Type: application/json
 
 {

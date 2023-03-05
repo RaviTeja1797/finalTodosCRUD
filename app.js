@@ -89,40 +89,33 @@ expressAppInstance.post("/todos/", async(request, response) => {
 });
 
 //API-4 updateTodo
-expressAppInstance.put("/todos/:todoId", async(request, response)=>{
+expressAppInstance.put("/todos/:todoId/", async(request, response)=>{
     let {todoId} = request.params;
-    todoId = parseInt(todoId)
+    
+    const requestBody = request.body;  
+    let updateColumn = "";
+    switch (true) {
+    case requestBody.status !== undefined:
+      updateColumn = "Status";
+      break;
+    case requestBody.priority !== undefined:
+      updateColumn = "Priority";
+      break;
+    case requestBody.todo !== undefined:
+      updateColumn = "Todo";
+      break;
+    }
+    const previousTodoQuery = `SELECT * FROM todo WHERE id=${todoId}`
+    const previousTodo = await databaseConnectionObject.get(previousTodoQuery)  
+    let {todo=previousTodo.todo, priority=previousTodo.priority, status=previousTodo.status} = request.body;
 
-    const currentTodoObject = await databaseConnectionObject.get(`SELECT * FROM todo WHERE id=${todoId}`)
-    const requestedTodoObject = request.body;    
-    let {todo=currentTodoObject.todo, status=currentTodoObject.status, priority=currentTodoObject.priority} = requestedTodoObject;
-
-    const updateTodoQuery = `UPDATE todo SET todo="${todo}", status="${status}", priority="${priority}" WHERE id=${todoId}`
+    const updateTodoQuery = `UPDATE todo SET todo="${todo}", priority="${priority}", status="${status}" WHERE id=${todoId};`
     try{
         await databaseConnectionObject.run(updateTodoQuery);
+        response.send(`${updateColumn} Updated`)
     }catch(e){
         console.log(`Database Error ${e.message}`)
     }
-    try{
-        let requestedObjectsKeys = Object.keys(requestedTodoObject);
-        let updatedObjectsString = "";
-        if (requestedObjectsKeys.length > 1){
-            requestedObjectsKeys = requestedObjectsKeys.map((eachIterable)=>{
-                return eachIterable.charAt(0).toUpperCase()+eachIterable.slice(1)
-            })
-            updatedObjectsString = requestedObjectsKeys.join(", ")
-        }else{
-            updatedObjectsString = requestedObjectsKeys[0];
-            updatedObjectsString = updatedObjectsString.charAt(0).toUpperCase()+updatedObjectsString.slice(1)
-        }
-
-        response.send(`${updatedObjectsString} Updated`);
-       
-
-    }catch(e){
-        console.log(`JS Error ${e.message}`)
-    }
-
 })
 
 
