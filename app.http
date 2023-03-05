@@ -1,0 +1,67 @@
+//API-1 getTodo
+get http://localhost:3002/todos/
+###
+
+//Scenario-1
+get http://localhost:3002/todos/?status=TO%20DO
+###
+
+//Scenario-2
+get http://localhost:3002/todos/?priority=LOW
+###
+
+//Scenario-3
+get http://localhost:3002/todos/?priority=HIGH&status=IN%20PROGRESS
+###
+
+//Scenario-4
+get http://localhost:3002/todos/?search_q=Learn
+###
+
+
+
+
+//API-2
+get http://localhost:3002/todos/5/
+###
+
+
+//API-3 addTodo
+post http://localhost:3002/todos/
+Content-Type : application/json
+
+{
+    "todo": "Learn XPM",
+    "priority": "LOW",
+    "status": "TO DO"
+}
+###
+
+//API-4 updateTodo
+put http://localhost:3002/todos/5
+Content-Type: application/json
+
+{
+    "priority": "HIGH"
+}
+###
+
+put http://localhost:3002/todos/6
+Content-Type: application/json
+
+{
+    "status": "DONE"
+}
+###
+
+put http://localhost:3002/todos/5
+Content-Type: application/json
+
+{
+    "todo": "Play games"
+}
+###
+
+//API-5 deleteTodo
+delete http://localhost:3002/todos/4
+###
